@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Barlow">
+      <style>
+         body {
+            font-family: Barlow; 
+         }
+
+         button {
+            margin-top: 20px; 
+         }
+
+         hr {
+            border: 0;
+            height: 1px;
+            background: #C4C4C4;
+            width: 50px; 
+            float: left; 
+            margin-top: 20px; 
+
+         }
+
+         #main {
+            text-align: center;  
+            width: 900px;   
+            margin: 80px auto;  
+            background-color: #F7F7F7;  
+            padding: 20px;     
+         }
+
+         #response {
+            word-wrap: break-word; 
+            text-align: left; 
+            margin: 20px; 
+            background-color: #EEEEEE;
+            border-radius: 10px; 
+         }
+
+         #fizzbuzz{
+            text-align: left; 
+            margin: 20px; 
+            background-color: #EEEEEE;
+            border-radius: 10px; 
+         }  
+      </style>
+   </head>
+   <body>
+      <div id='main'>
+         <h1>encrypted-fizz-api</h1>
+         <input id='input-text' type='text' placeholder='Enter number to fizz to..' />
+         <button onClick={handleClick()}>Submit</button>
+         <div id='response'></div>
+         <div id='fizzbuzz'></div>
+      </div>
+      
+      <script>
+         function handleClick() {
+            let URL = 'http://localhost:8081/get_fizz?num=';
+            const num = document.getElementById('input-text').value;
+            URL += num;
+            fetch(URL, {
+               mode: 'cors',
+               headers: {
+                  'Access-Control-Allow-Origin':'localhost:8081'
+               }
+            })
+               .then(res => res.json())
+               .then(data => handleResponse(data));
+         }
+
+         function handleResponse(data) {
+            console.log('response: ', data);
+            let container = document.getElementById('response');
+            container.style.padding = '20px';
+            fizzbuzz.style.padding = '20px';
+            container.innerHTML = `Response: ${JSON.stringify(data)}`; 
+            const fizzArr = parseFizz(data);
+            displayFizz(fizzArr); 
+         }
+
+         function parseFizz(data) {    
+            const str = data.message; 
+            let ans = [];
+            let count = 1;
+            for (let i = 0; i < str.length; i++) {
+               if (str.slice(i,i+5) === '01110') {
+                  ans.push('fizzbuzz');
+                  i += 4;
+               } else if (str.slice(i,i+2) === '10') {
+                  ans.push('fizz');
+                  i++;
+               } else if (str.slice(i,i+3) === '012') {
+                  ans.push('buzz');
+                  i += 2;
+               } else {
+                  ans.push(count.toString());
+               }
+               count++;
+            }
+            return ans; 
+         }
+
+         function displayFizz(arr) {
+            let fizzContainer = document.getElementById('fizzbuzz');
+            fizzContainer.innerHTML = '';
+            for (const a of arr) {
+               if (a === 'fizzbuzz') {
+                  fizzContainer.innerHTML += a + '<br><hr><br><br>';
+               } else {
+                  fizzContainer.innerHTML += a + '<br>';
+               }
+            }
+         }
+      </script>
+   </body>
+</html>
