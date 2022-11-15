@@ -1,4 +1,4 @@
-Fizzbuzz REST API that encryps fizzbuzz message that is decrypted and displayed in the browser.
+Fizzbuzz REST API made with Node.js & Express that encrypts a fizzbuzz message that is decrypted and displayed in the browser.
 
 Steps to run: 
 - Make sure node is installed
