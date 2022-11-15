@@ -5,3 +5,4 @@ Steps to run:
 - Navigate to directory
 - Run 'npm i'
 - Run 'node server.js' 
+- Open index.html
